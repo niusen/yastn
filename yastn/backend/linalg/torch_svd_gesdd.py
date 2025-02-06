@@ -424,12 +424,12 @@ class SVDGESDD(torch.autograd.Function):
         # // https://giggleliu.github.io/2019/04/02/einsumbp.html
         # // https://arxiv.org/abs/1909.02659
         dA= u_term + sigma_term + v_term
-        # if u.is_complex() or v.is_complex():
-        #     L= (uh @ gu).diagonal(0,-2,-1)
-        #     L.real.zero_()
-        #     L.imag.mul_(sigma_inv)
-        #     imag_term= (u * L.unsqueeze(-2)) @ vh
-        #     dA= dA + imag_term
+        if u.is_complex() or v.is_complex():
+            L= (uh @ gu).diagonal(0,-2,-1)
+            L.real.zero_()
+            L.imag.mul_(sigma_inv)
+            imag_term= (u * L.unsqueeze(-2)) @ vh
+            dA= dA + imag_term
 
         if diagnostics is not None:
             print(f"{diagnostics} {dA.abs().max()} {sigma.max()}")
