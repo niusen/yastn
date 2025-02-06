@@ -372,6 +372,11 @@ class SVDGESDD(torch.autograd.Function):
         G = safe_inverse(G, sigma_scale*eps)
         G.diagonal(0,-2,-1).fill_(0)
 
+        ################
+        print(F)
+        print(G)
+        ################
+
         uh= u.conj().transpose(-2,-1)
         if not (gu is None):
             guh = gu.conj().transpose(-2, -1);
