@@ -3,9 +3,8 @@ import warnings
 
 def safe_inverse(x, eps_rel=1.0e-12, eps_abs=1.0e-12):
     print('eps in safe_inverse:'+str(eps_abs))
-    print((x>(torch.max(x)*1e-8)))
-    return (x / (x ** 2 + eps_abs))*(x>(torch.max(x)*1e-8))
-
+    
+    return (x / (x ** 2 + eps_abs))
 
 # def safe_inverse_2(x, epsilon):
 #     x[abs(x) < epsilon] = float('inf')
@@ -371,14 +370,14 @@ class SVDGESDD(torch.autograd.Function):
 
         # sigma_inv= safe_inverse_2(sigma.clone(), sigma_scale*eps)
         # sigma_inv= safe_inverse(sigma.clone(), eps_abs=sigma_scale*eps)
-        sigma_inv= safe_inverse(sigma.clone(), eps_abs=sigma_scale**2*eps)
+        sigma_inv= safe_inverse(sigma.clone(), eps_abs=sigma_scale*eps)
 
         F = sigma.unsqueeze(-2) - sigma.unsqueeze(-1)
-        F = safe_inverse(F, eps_abs=sigma_scale**2*eps)
+        F = safe_inverse(F, eps_abs=sigma_scale*eps)
         F.diagonal(0,-2,-1).fill_(0)
 
         G = sigma.unsqueeze(-2) + sigma.unsqueeze(-1)
-        G = safe_inverse(G, eps_abs=sigma_scale**2*eps)
+        G = safe_inverse(G, eps_abs=sigma_scale*eps)
         G.diagonal(0,-2,-1).fill_(0)
 
         ################
