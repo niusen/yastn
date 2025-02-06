@@ -2,6 +2,7 @@ import torch
 import warnings
 
 def safe_inverse(x, eps_rel=1.0e-12, eps_abs=1.0e-12):
+    print('eps in safe_inverse:'+str(eps_abs))
     return x / (x ** 2 + eps_abs)
 
 
@@ -332,6 +333,9 @@ class SVDGESDD(torch.autograd.Function):
 
         diagnostics= self.diagnostics
         u, sigma, vh, eps= self.saved_tensors
+        ###################
+        print('eps in saved_tensors:'+str(eps))
+        ###################
         m= u.size(0) # first dim of original tensor A = u sigma v^\dag
         n= vh.size(1) # second dim of A
         k= sigma.size(0)
@@ -373,8 +377,8 @@ class SVDGESDD(torch.autograd.Function):
         G.diagonal(0,-2,-1).fill_(0)
 
         ################
-        print(F)
-        print(G)
+        #print(F)
+        #print(G)
         ################
 
         uh= u.conj().transpose(-2,-1)
