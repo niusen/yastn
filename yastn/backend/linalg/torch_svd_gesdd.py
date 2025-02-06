@@ -340,6 +340,10 @@ class SVDGESDD(torch.autograd.Function):
         n= vh.size(1) # second dim of A
         k= sigma.size(0)
         sigma_scale= sigma[0]
+        ###################
+        print('sigma_scale:'+str(sigma_scale))
+        print(sigma)
+        ###################
 
         # ? some
         if (u.size(-2)!=u.size(-1)) or (vh.size(-2)!=vh.size(-1)):
